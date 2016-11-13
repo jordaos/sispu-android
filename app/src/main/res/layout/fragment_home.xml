@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:textSize="36sp"
+        android:textColor="@color/wallet_link_text_light"
+        android:textStyle="normal|bold"
+        android:textAllCaps="false" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <TextView
+                android:text="Breve descrição"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:fontFamily="sans-serif"
+                android:textSize="20sp"
+                android:textColor="@color/common_plus_signin_btn_text_light_default"
+                android:textStyle="normal|bold"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vestibulum, turpis non accumsan bibendum, felis tortor egestas massa, et efficitur urna est eu turpis. Nulla semper elit lacus, sed faucibus arcu eleifend pulvinar. Etiam egestas risus quis libero dictum tincidunt. Duis eget finibus velit. Etiam erat nisl, eleifend cursus nisi non, sollicitudin malesuada ex. Suspendisse sagittis, justo vel sagittis fermentum, erat augue luctus dui, quis convallis nulla ligula ut lacus. In vel odio eget justo porttitor gravida. Integer quis ullamcorper orci. Integer interdum, nisi at congue aliquam, ligula lectus posuere odio, eget congue magna odio in mi. Aliquam interdum et ipsum ac dapibus. Donec consequat rutrum tortor, ac convallis mi bibendum a. Maecenas porta molestie tortor eget euismod. Sed iaculis augue ut venenatis consectetur. Aenean vitae rhoncus ipsum. Donec commodo at massa ac efficitur.
+
+Curabitur efficitur vestibulum egestas. In hac habitasse platea dictumst. Nullam molestie tempor ex eget viverra. Suspendisse eu nisi in tellus porta vestibulum. Aliquam non odio aliquam, venenatis eros porttitor, placerat metus. Curabitur tristique felis libero, vitae vulputate magna fringilla tempor. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+
+Duis sit amet tortor id erat rhoncus sodales non id ante. Nulla lacinia lectus at diam mollis, nec consequat erat rhoncus. In ac justo mi. Praesent nec cursus nunc, in congue velit. Quisque quis consequat sapien, eget lobortis ipsum. Aliquam erat volutpat. Ut magna arcu, semper sit amet bibendum ac, laoreet nec erat. Quisque rhoncus malesuada magna a lacinia. Cras ex metus, placerat nec lacinia non, gravida vitae est. Donec sagittis vel sapien at finibus. Nunc vitae massa purus. Donec blandit suscipit turpis, eu sagittis risus scelerisque ut. Vivamus dui ante, elementum eu mi in, fringilla vestibulum felis."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:fontFamily="sans-serif"
+                android:textSize="17sp"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textStyle="normal"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,11 +1,21 @@
 package com.onewaree.sispu;
 
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.graphics.drawable.DrawableWrapper;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +25,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
@@ -208,17 +223,6 @@ public class MainActivity extends AppCompatActivity
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                                 String currentDate = sdf.format(new Date());
 
-
-                                /*AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                                alertDialog.setTitle(autor);
-                                alertDialog.setMessage("Alert message to be shown");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();*/
                                 controlePontos.addPonto(titulo, autor, descricao, latLng, currentDate);
 
                                 add_marker.setVisibility(View.VISIBLE);
@@ -262,6 +266,75 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+
+
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.hideInfoWindow();
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 12.0f));
+
+                View aboutMarker = getLayoutInflater().inflate(R.layout.iw_about_marker, null);
+
+
+                final PopupWindow pwindo = new PopupWindow(aboutMarker,480,200,true);
+                pwindo.showAtLocation(aboutMarker, Gravity.CENTER, 0, -200);
+                pwindo.setOutsideTouchable(true);
+                pwindo.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+
+                Button bntCloseIW_AM = (Button) aboutMarker.findViewById(R.id.bntCloseIW_AM);
+
+                bntCloseIW_AM.setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        pwindo.dismiss();
+                    }
+                });
+
+
+
+
+                return true;
+            }
+
+        });
+
+
+
+        // Setting a custom info window adapter for the google map
+        /*map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View aboutMarker = getLayoutInflater().inflate(R.layout.iw_about_marker, null);
+
+                // Getting the position from the marker
+                LatLng latLng = marker.getPosition();
+
+                Button bnt = (Button) aboutMarker.findViewById(R.id.seeMore);
+                bnt.setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        Log.d("Mensagem ", "Clicou em ver mais");
+                    }
+                });
+
+                // Returning the view containing InfoWindow contents
+                return aboutMarker;
+            }
+        });*/
     }
 
     public void marcarPontos(ControlePontos controlepontos){
@@ -272,3 +345,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 }
+/*AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                                alertDialog.setTitle(autor);
+                                alertDialog.setMessage("Alert message to be shown");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();*/

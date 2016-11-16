@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -277,14 +279,23 @@ public class MainActivity extends AppCompatActivity
                 View aboutMarker = getLayoutInflater().inflate(R.layout.iw_about_marker, null);
 
 
-                final PopupWindow pwindo = new PopupWindow(aboutMarker,480,200,true);
-                pwindo.showAtLocation(aboutMarker, Gravity.CENTER, 0, -200);
+                final PopupWindow pwindo = new PopupWindow(aboutMarker,480,250,true);
+                pwindo.showAtLocation(aboutMarker, Gravity.CENTER, 0, -160);
                 pwindo.setOutsideTouchable(true);
-                pwindo.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
                 Button bntCloseIW_AM = (Button) aboutMarker.findViewById(R.id.bntCloseIW_AM);
 
                 bntCloseIW_AM.setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        pwindo.dismiss();
+                    }
+                });
+
+                Button bntSeeMoreIW_AM = (Button) aboutMarker.findViewById(R.id.seeMore);
+
+                bntSeeMoreIW_AM.setOnClickListener(new View.OnClickListener()
                 {
                     public void onClick(View v)
                     {

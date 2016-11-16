@@ -25,7 +25,7 @@
             android:layout_marginBottom="0pt"
             android:layout_marginTop="0pt">
 
-            <TextView
+        <TextView
                 android:text="Título"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:textStyle="normal|bold"
                 android:textAlignment="center" />
 
-            <LinearLayout
+        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -48,5 +48,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/triangulo"
+        android:layout_marginTop="-2pt"
+        android:id="@+id/imageView3" />
 
 </LinearLayout>

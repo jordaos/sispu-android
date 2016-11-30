@@ -4,25 +4,15 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -38,16 +28,13 @@ public class ManipuleJSON {
         URL url;
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL("http://onewaree.com/JSON/maps.json");
+            url = new URL("http://onewaree.com/trab_redes/JSONdemandas.php");
 
             urlConnection = (HttpURLConnection) url.openConnection();
-
             InputStream in = urlConnection.getInputStream();
 
             //InputStreamReader isw = new InputStreamReader(in);
-
             String data = converterInputStreamToString(in);
-
             JSONObject obj = new JSONObject(data);
             return obj;
         } catch (Exception e) {
@@ -97,7 +84,7 @@ public class ManipuleJSON {
                     "&data=" + URLEncoder.encode(JSON.getString("data"), "UTF-8");
 
             //Create connection
-            url = new URL("http://onewaree.com/JSON/getJSON.php");
+            url = new URL("http://onewaree.com/trab_redes/InsertDemanda.php");
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -127,6 +114,7 @@ public class ManipuleJSON {
                 response.append(line);
                 response.append('\r');
             }
+            Log.d("Sispu", response.toString());
             rd.close();
 
         } catch (Exception e) {

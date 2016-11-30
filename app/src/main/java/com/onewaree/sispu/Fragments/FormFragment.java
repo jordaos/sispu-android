@@ -2,6 +2,7 @@ package com.onewaree.sispu.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +14,21 @@ import android.widget.TextView;
 
 import com.onewaree.sispu.R;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by jordao on 13/11/16.
  */
 
 public class FormFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_form, null);
         final EditText nome = (EditText) rootView.findViewById(R.id.form_nome);
         Button bnt = (Button) rootView.findViewById(R.id.form_bnt);
@@ -33,8 +41,6 @@ public class FormFragment extends Fragment {
                 label.setText(nome.getText().toString());
             }
         });
-
-        Log.d("FORM:", nome.getText().toString());
 
         return inflater.inflate(R.layout.fragment_form,container,false);
     }

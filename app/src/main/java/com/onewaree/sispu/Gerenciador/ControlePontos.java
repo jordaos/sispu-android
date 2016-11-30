@@ -1,6 +1,10 @@
-package com.onewaree.sispu.Classes;
+package com.onewaree.sispu.Gerenciador;
+
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.onewaree.sispu.DAO.PontoDAO;
+import com.onewaree.sispu.POJO.Ponto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +15,20 @@ import java.util.List;
 
 public class ControlePontos {
     private List<Ponto> pontos = new ArrayList<Ponto>();
+    PontoDAO pDAO;
+    String url;
 
     public void addPonto(String titulo, String autor, String descricao, LatLng latlng, String data){
-        pontos.add(new Ponto(titulo, autor, descricao, latlng, data));
+        Ponto p = new Ponto();
+        p.setTitulo(titulo);
+        p.setAutor(autor);
+        p.setDescricao(descricao);
+        p.setData(data);
+        p.setLatLng(latlng);
+        pontos.add(p);
+
+        Log.d("SISPUDBG", "add ponto controle");
+        pDAO.addPonto(p);
     }
 
     public Ponto getPonto(LatLng latlng){
@@ -29,8 +44,7 @@ public class ControlePontos {
     }
 
     public ControlePontos(){
-        pontos.add(new Ponto("P1", "A1", "D1", new LatLng(-4.8, -39.1), "10/11/2016"));
-        pontos.add(new Ponto("P2", "A2", "D2", new LatLng(-4.9, -39.06), "11/11/2016"));
-        pontos.add(new Ponto("P3", "A3", "D3", new LatLng(-4.8, -39.03528), "12/11/2016"));
+        pDAO  = new PontoDAO();
+        pontos = pDAO.getListPontos();
     }
 }

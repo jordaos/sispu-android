@@ -1,4 +1,4 @@
-package com.onewaree.sispu.Classes;
+package com.onewaree.sispu.POJO;
 
 /**
  * Created by jordao on 12/11/16.

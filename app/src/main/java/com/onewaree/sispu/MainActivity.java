@@ -1,22 +1,12 @@
 package com.onewaree.sispu;
 
-import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.drawable.DrawableWrapper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,12 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,12 +31,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.onewaree.sispu.Classes.Ponto;
+import com.onewaree.sispu.POJO.Ponto;
 import com.onewaree.sispu.Fragments.ImportFragment;
 import com.onewaree.sispu.Fragments.HomeFragment;
 import com.onewaree.sispu.Fragments.FormFragment;
 
-import com.onewaree.sispu.Classes.ControlePontos;
+import com.onewaree.sispu.Gerenciador.ControlePontos;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -60,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton add_marker;
     FloatingActionButton rmv_marker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

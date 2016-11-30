@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("SISPU", "Iniciou");
-
         super.onCreate(savedInstanceState);
 
         sMapfragment = SupportMapFragment.newInstance().newInstance();
@@ -274,6 +273,11 @@ public class MainActivity extends AppCompatActivity
                 pwindo.showAtLocation(aboutMarker, Gravity.CENTER, 0, -160);
                 pwindo.setOutsideTouchable(true);
 
+                final Ponto p = controlePontos.getPonto(marker.getPosition());
+                TextView tv_titulo = (TextView) aboutMarker.findViewById(R.id.seeMore_titulo);
+                tv_titulo.setText(p.getTitulo());
+
+
                 Button bntCloseIW_AM = (Button) aboutMarker.findViewById(R.id.bntCloseIW_AM);
 
                 bntCloseIW_AM.setOnClickListener(new View.OnClickListener()
@@ -291,52 +295,39 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View v)
                     {
                         pwindo.dismiss();
+
+                        //ALERT DIALOG
+                        LayoutInflater inflater = getLayoutInflater();
+                        final View see_about_point = inflater.inflate(R.layout.dialog_about_marker, null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle(p.getTitulo());
+                        builder.setView(see_about_point);
+
+                        TextView tv_autor = (TextView) see_about_point.findViewById(R.id.tv_autor);
+                        tv_autor.setText(p.getAutor());
+
+                        TextView tv_data = (TextView) see_about_point.findViewById(R.id.tv_data);
+                        tv_data.setText(p.getData());
+
+                        TextView tv_descricao = (TextView) see_about_point.findViewById(R.id.tv_descricao);
+                        tv_descricao.setText(p.getDescricao());
+
+
+                        builder.setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.show();
                     }
                 });
-
-
-
 
                 return true;
             }
 
         });
-
-
-
-        // Setting a custom info window adapter for the google map
-        /*map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            // Use default InfoWindow frame
-            @Override
-            public View getInfoWindow(Marker arg0) {
-                return null;
-            }
-
-
-            // Defines the contents of the InfoWindow
-            @Override
-            public View getInfoContents(Marker marker) {
-
-                // Getting view from the layout file info_window_layout
-                View aboutMarker = getLayoutInflater().inflate(R.layout.iw_about_marker, null);
-
-                // Getting the position from the marker
-                LatLng latLng = marker.getPosition();
-
-                Button bnt = (Button) aboutMarker.findViewById(R.id.seeMore);
-                bnt.setOnClickListener(new View.OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        Log.d("Mensagem ", "Clicou em ver mais");
-                    }
-                });
-
-                // Returning the view containing InfoWindow contents
-                return aboutMarker;
-            }
-        });*/
     }
 
     public void marcarPontos(ControlePontos controlepontos){

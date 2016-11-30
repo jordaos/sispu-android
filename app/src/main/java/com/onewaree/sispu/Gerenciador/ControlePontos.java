@@ -33,7 +33,7 @@ public class ControlePontos {
 
     public Ponto getPonto(LatLng latlng){
         for(Ponto p : pontos){
-            if(p.getLatlng() == latlng)
+            if(p.getLatlng().latitude == latlng.latitude && p.getLatlng().longitude == latlng.longitude)
                 return p;
         }
         return null;

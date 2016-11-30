@@ -4,14 +4,25 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -75,38 +86,54 @@ public class ManipuleJSON {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String data = JSON.toString();
-
         URL url;
-        HttpURLConnection urlConnection = null;
-        Log.d("SISPUDBG", "SENDJSON");
+        HttpURLConnection connection = null;
         try {
-            url = new URL("http://onewaree.com/JSON/maps.json");
+            String urlParameters = "autor=" + URLEncoder.encode(JSON.getString("autor"), "UTF-8") +
+                    "&titulo=" + URLEncoder.encode(JSON.getString("titulo"), "UTF-8") +
+                    "&descricao=" + URLEncoder.encode(JSON.getString("descricao"), "UTF-8") +
+                    "&lat=" + URLEncoder.encode(JSON.getString("lat"), "UTF-8") +
+                    "&lng=" + URLEncoder.encode(JSON.getString("lng"), "UTF-8") +
+                    "&data=" + URLEncoder.encode(JSON.getString("data"), "UTF-8");
 
-            urlConnection = (HttpURLConnection) url.openConnection();
+            //Create connection
+            url = new URL("http://onewaree.com/JSON/getJSON.php");
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
 
-            byte[] utf8Bytes = data.getBytes("UTF-8");
+            connection.setRequestProperty("Content-Length", "" +
+                    Integer.toString(urlParameters.getBytes().length));
+            connection.setRequestProperty("Content-Language", "en-US");
 
-            urlConnection.setDoOutput( true );
-            urlConnection.setInstanceFollowRedirects( false );
-            urlConnection.setRequestMethod( "POST" );
-            urlConnection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty( "charset", "utf-8");
-            urlConnection.setRequestProperty( "Content-Length", Integer.toString(utf8Bytes.length));
-            urlConnection.setUseCaches( false );
+            connection.setUseCaches (false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
 
-            Log.d("SISPUDBG", "ola 1");
+            //Send request
+            DataOutputStream wr = new DataOutputStream (
+                    connection.getOutputStream ());
+            wr.writeBytes(urlParameters);
+            wr.flush ();
+            wr.close ();
 
-            DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            Log.d("SISPUDBG", "ola 2");
-            wr.write(utf8Bytes);
+            //Get Response
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while((line = rd.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            rd.close();
 
-            Log.d("SISPUDBG", "ola 3");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("SISPU_EXPT", e.toString());
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
+            if(connection != null) {
+                connection.disconnect();
             }
         }
     }

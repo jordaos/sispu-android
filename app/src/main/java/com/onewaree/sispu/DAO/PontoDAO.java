@@ -54,20 +54,19 @@ public class PontoDAO {
 
     public void addPonto(Ponto p){
         JSONObject JSON = parseJSON(p);
-        Log.d("SISPUDBG", "passou do json");
         manipuleJSON.sendJSON(JSON);
     }
 
     private JSONObject parseJSON(Ponto p){
         String data = "{";
-            data += "\"ponto\": {";
-                data += "\"autor\" : " + p.getAutor() + ", ";
-                data += "\"titulo\" : " + p.getTitulo() + ", ";
-                data += "\"descricao\" : " + p.getDescricao() + ", ";
-                data += "\"lat\" : " + p.getLatlng().latitude + ", ";
-                data += "\"lng\" : " + p.getLatlng().longitude + ", ";
-                data += "\"data\" : " + p.getData();
-            data += "}";
+            //data += "\"ponto\": {";
+                data += "\"autor\" : \"" + p.getAutor() + "\", ";
+                data += "\"titulo\" : \"" + p.getTitulo() + "\", ";
+                data += "\"descricao\" : \"" + p.getDescricao() + "\", ";
+                data += "\"lat\" : \"" + p.getLatlng().latitude + "\", ";
+                data += "\"lng\" : \"" + p.getLatlng().longitude + "\", ";
+                data += "\"data\" : \"" + p.getData() + "\"";
+            //data += "}";
         data += "}";
 
         JSONObject JSON = null;
@@ -76,7 +75,6 @@ public class PontoDAO {
         } catch (JSONException e) {
             Log.d("SISPU", e.toString());
         }
-        Log.d("SISPUDBG", data);
         return JSON;
     }
 }

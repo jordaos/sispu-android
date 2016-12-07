@@ -33,6 +33,7 @@ public class PontoDAO {
                 JSONObject objArray = array.getJSONObject(i);
 
                 Ponto p = new Ponto();
+                p.setCodigo(objArray.getInt("id"));
                 p.setTitulo(objArray.getString("titulo"));
                 p.setAutor(objArray.getString("autor"));
                 p.setDescricao(objArray.getString("descricao"));

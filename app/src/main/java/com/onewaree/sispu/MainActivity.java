@@ -1,7 +1,10 @@
 package com.onewaree.sispu;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -30,9 +34,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.onewaree.sispu.Fragments.NoConnectionFragment;
+import com.onewaree.sispu.Gerenciador.ControleComentarios;
+import com.onewaree.sispu.POJO.Comentario;
 import com.onewaree.sispu.POJO.Ponto;
 import com.onewaree.sispu.Fragments.ImportFragment;
 import com.onewaree.sispu.Fragments.HomeFragment;
@@ -46,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     SupportMapFragment sMapfragment;
     GoogleMap map;
     ControlePontos controlePontos;
+    ControleComentarios controleComentarios;
 
     FloatingActionButton add_marker;
     FloatingActionButton rmv_marker;
@@ -68,20 +80,26 @@ public class MainActivity extends AppCompatActivity
         add_marker = (FloatingActionButton) findViewById(R.id.add_marker);
         add_marker.setVisibility(View.INVISIBLE);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //if(hasActiveInternetConnection(this)){
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
 
 
-        sMapfragment.getMapAsync(this);
+            sMapfragment.getMapAsync(this);
+        /*}else{
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_frame, new NoConnectionFragment()).commit();
+        }*/
     }
 
     @Override
@@ -166,7 +184,10 @@ public class MainActivity extends AppCompatActivity
 
         //MARCANDO OS PONTOS CADASTRADOS NO MAPA
         controlePontos = new ControlePontos();
-        marcarPontos(controlePontos);
+        marcarPontos();
+
+        controleComentarios = new ControleComentarios();
+        getComentarios();
 
         // AO CLICLICAR EM ADICIONAR PONTO (+)
         add_marker.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +243,7 @@ public class MainActivity extends AppCompatActivity
 
                                 map.clear();
                                 map.setOnMapClickListener(null);
-                                marcarPontos(controlePontos);
+                                marcarPontos();
 
                                 dialog.dismiss();
 
@@ -236,7 +257,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 map.clear();
                                 dialog.cancel();
-                                marcarPontos(controlePontos);
+                                marcarPontos();
                             }
                         });
 
@@ -252,7 +273,7 @@ public class MainActivity extends AppCompatActivity
 
                         map.clear();
                         map.setOnMapClickListener(null);
-                        marcarPontos(controlePontos);
+                        marcarPontos();
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 12.0f));
                     }
                 });
@@ -303,7 +324,7 @@ public class MainActivity extends AppCompatActivity
                         builder.setTitle(p.getTitulo());
                         builder.setView(see_about_point);
 
-                        TextView tv_autor = (TextView) see_about_point.findViewById(R.id.tv_autor);
+                        final TextView tv_autor = (TextView) see_about_point.findViewById(R.id.tv_autor);
                         tv_autor.setText(p.getAutor());
 
                         TextView tv_data = (TextView) see_about_point.findViewById(R.id.tv_data);
@@ -320,7 +341,41 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
 
+
                         builder.show();
+
+                        final LinearLayout llAboutMarker = (LinearLayout) see_about_point.findViewById(R.id.llAboutMarker);
+                        Button bntAddComentario = (Button) llAboutMarker.findViewById(R.id.buttonAddComment);
+                        final LinearLayout content_coments = new LinearLayout(MainActivity.this);
+
+                        showComents(content_coments, p);
+
+                        bntAddComentario.setOnClickListener(new View.OnClickListener()
+                        {
+                            public void onClick(View v){
+                                EditText nomeUser = (EditText) llAboutMarker.findViewById(R.id.nomeUser);
+                                EditText comentUser = (EditText) llAboutMarker.findViewById(R.id.comentarioUser);
+                                TextView textView1 = new TextView(MainActivity.this);
+                                textView1.setWidth(tv_autor.getWidth());
+                                textView1.setText(nomeUser.getText());
+                                TextView textView2 = new TextView(MainActivity.this);
+                                textView2.setWidth(tv_autor.getWidth());
+                                textView2.setText(comentUser.getText());
+                                content_coments.addView(textView1);
+                                content_coments.addView(textView2);
+
+                                Comentario novo = new Comentario();
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                String currentDate = sdf.format(new Date());
+                                novo.setData(currentDate);
+                                novo.setMensagem(comentUser.getText().toString());
+                                novo.setAutor(nomeUser.getText().toString());
+                                novo.setCodDemanda(p.getCodigo());
+
+                                controleComentarios.addComentario(novo);
+                            }
+                        });
+                        llAboutMarker.addView(content_coments);
                     }
                 });
 
@@ -330,11 +385,29 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void marcarPontos(ControlePontos controlepontos){
-        for(Ponto p: controlepontos.getPontos() ){
+    public void marcarPontos(){
+        for(Ponto p: controlePontos.getPontos() ){
             map.addMarker(new MarkerOptions()
                     .position(p.getLatlng())
                     .title(p.getTitulo()));
+        }
+    }
+
+    public void getComentarios(){
+        for(Comentario c : controleComentarios.getComentarios()){
+            Ponto p = controlePontos.getPontoByID(c.getCodDemanda());
+            p.addComentario(c);
+        }
+    }
+
+    public void showComents(LinearLayout content_coments, Ponto p){
+        for(Comentario c : p.getComentarios()){
+            TextView textView1 = new TextView(MainActivity.this);
+            textView1.setText("Autor: " + c.getAutor());
+            TextView textView2 = new TextView(MainActivity.this);
+            textView2.setText("Comentario: " + c.getMensagem());
+            content_coments.addView(textView1);
+            content_coments.addView(textView2);
         }
     }
 }

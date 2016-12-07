@@ -1,33 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:text="Autor:"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView14" />
-
-    <TextView
-        android:text="Nome Autor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_autor"
-        android:textSize="20sp" />
-
-    <TextView
-        android:text="Postado em:"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView16" />
-
-    <TextView
-        android:text="Data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_data"
-        android:textSize="20sp" />
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,13 +10,95 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/llAboutMarker">
+
+            <TextView
+                android:text="Autor:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView14" />
+
+            <TextView
+                android:text="Nome Autor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_autor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="Postado em:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView16" />
+
+            <TextView
+                android:text="Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_data"
+                android:textSize="20sp" />
+
             <TextView
                 android:text="Dercrição:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_descricao" />
+
+            <TextView
+                android:text="Comentários:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView11" />
+
+            <TextView
+                android:text="Novo comentário"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView15"
+                android:textAlignment="center"
+                android:textSize="22sp" />
+
+            <TextView
+                android:text="Nome:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView17" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/nomeUser"
+                android:background="#9a9a"
+                android:textColor="#000"/>
+
+            <TextView
+                android:text="Comentário:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView18" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/comentarioUser"
+                android:layout_weight="0.45"
+                android:background="#9a9a"
+                android:textColor="#000"/>
+
+            <Button
+                android:text="Enviar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonAddComment" />
         </LinearLayout>
+
     </ScrollView>
+
+
 </LinearLayout>

@@ -27,7 +27,6 @@ public class ControlePontos {
         p.setLatLng(latlng);
         pontos.add(p);
 
-        Log.d("SISPUDBG", "add ponto controle");
         pDAO.addPonto(p);
     }
 
@@ -35,6 +34,15 @@ public class ControlePontos {
         for(Ponto p : pontos){
             if(p.getLatlng().latitude == latlng.latitude && p.getLatlng().longitude == latlng.longitude)
                 return p;
+        }
+        return null;
+    }
+
+    public Ponto getPontoByID(int id){
+        for(Ponto p : pontos){
+            if(p.getCodigo() == id){
+                return p;
+            }
         }
         return null;
     }
